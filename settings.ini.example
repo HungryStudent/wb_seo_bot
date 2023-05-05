@@ -1,0 +1,16 @@
+[settings]
+TOKEN = 12345:AAAAA
+admins = 12345
+BOTNAME = dev_bot
+SUPPORT_BOTNAME = dev_bot
+OPENAI_TOKEN = sk-AAAA
+pay_token = 12345:TEST:12345
+[file_id]
+video = FILE_ID
+doc = FILE_ID
+[db]
+user = postgres
+password = postgres
+database = wb_seo_bot
+host = 127.0.0.1
+port = 5432
