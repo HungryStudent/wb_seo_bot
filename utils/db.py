@@ -266,7 +266,7 @@ async def get_priorities_by_category_id(category_id):
     search_priorities.priorities_pos
 FROM search_priorities
          join search s on s.search_id = search_priorities.search_id
-         left join search_frequency sf on s.search_id = sf.search_id and sf.report_type = 'week' and
+         left join search_frequency sf on s.search_id = sf.search_id and sf.report_type = 'month' and
                                            sf.update_day = (SELECT MAX(update_day) FROM search_frequency)
 WHERE category_id = $1""",
                             category_id)
