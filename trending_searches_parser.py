@@ -52,6 +52,9 @@ async def main(period):
             await db.add_search_priorities(search_priorities)
         except Exception as e:
             print(e)
+            print("skip - ", index)
+        if index % 5000 == 0:
+            print("ready - ", index)
 
         # merger
 
