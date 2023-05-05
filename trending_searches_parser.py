@@ -60,4 +60,4 @@ async def main(period):
 
 
 if __name__ == '__main__':
-    asyncio.run(main(sys.argv[0]))
+    asyncio.run(main(sys.argv[1]))

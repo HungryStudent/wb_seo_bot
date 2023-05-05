@@ -14,7 +14,6 @@ async def get_search_info(search_query):
                 response = await resp.json(content_type="text/plain")
             except aiohttp.client_exceptions.ContentTypeError:
                 return
-            print(search_query, response)
             if response is None:
                 return
             return response

@@ -69,7 +69,7 @@ async def start_desc_generate(call: CallbackQuery, state: FSMContext):
         return
     await call.message.edit_text("⏳ Ожидайте, формируем результат...")
     prompt = f"Напиши описание для карточки товара длинной 2000 символов: {name}, используй все перечисленные ниже слова: {', '.join(phrases)}. Стиль написания {desc_style[user['desc_style_id']]['prompt']}"
-    print(prompt)
+
     desc = await chatgpt.get_ans(prompt)
     await call.message.edit_text(
         f'Вот что получилось:\n\n{desc}', disable_web_page_preview=True, reply_markup=user_kb.get_desc_complete())
