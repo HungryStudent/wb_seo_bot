@@ -76,6 +76,6 @@ async def create_report(user_id: int, category_id: int):
     for record in word_forms_data:
         word_forms_ws.append(list(record.values()))
 
-    filename = f"{user_id}-{category_id}"
+    filename = f"{user_id}-{category_id}.xlsx"
     wb.save(filename)
     return {"filename": filename}
