@@ -9,6 +9,7 @@ SUPPORT_BOTNAME = config["settings"]["SUPPORT_BOTNAME"]
 ADMINS = config["settings"]["admins"].split(",")
 ADMINS = [int(admin) for admin in ADMINS]
 pay_token = config["settings"]["pay_token"]
+main_report_type = config["settings"]["main_report_type"]
 
 video_file_id = config["file_id"]["video"]
 doc_file_id = config["file_id"]["doc"]
