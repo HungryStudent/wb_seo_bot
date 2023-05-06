@@ -171,13 +171,6 @@ async def delete_first_search_frequency():
     await conn.close()
 
 
-async def delete_search_priorities():
-    conn: Connection = await get_conn()
-    await conn.execute(
-        "DELETE from search_priorities")
-    await conn.close()
-
-
 async def add_categories(categories):
     conn: Connection = await get_conn()
     await conn.executemany(
@@ -188,9 +181,12 @@ async def add_categories(categories):
 
 async def add_search_priorities(search_priorities):
     conn: Connection = await get_conn()
-    await conn.executemany(
-        "INSERT INTO search_priorities VALUES ($1, $2, $3)",
-        search_priorities)
+    try:
+        await conn.executemany(
+            "INSERT INTO search_priorities VALUES ($1, $2, $3)",
+            search_priorities)
+    except UniqueViolationError:
+        pass
     await conn.close()
 
 

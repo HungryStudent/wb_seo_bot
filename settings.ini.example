@@ -6,6 +6,7 @@ SUPPORT_BOTNAME = dev_bot
 OPENAI_TOKEN = sk-AAAA
 pay_token = 12345:TEST:12345
 main_report_type = week
+searches_server_host= http://127.0.0.1:8000
 [file_id]
 video = FILE_ID
 doc = FILE_ID

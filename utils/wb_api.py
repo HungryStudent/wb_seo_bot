@@ -6,7 +6,6 @@ async def get_search_info(search_query):
         async with session.get(
                 f'https://search.wb.ru/exactmatch/ru/common/v4/search?appType=1&curr=rub&dest=123585704&filters=xsubject&query={search_query}&resultset=filters') as resp:
             text = await resp.text()
-            print(text)
             if text == "{}":
                 return
             if resp.status == 404:

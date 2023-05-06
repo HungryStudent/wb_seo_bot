@@ -67,18 +67,17 @@ async def enter_request(message: Message, state: FSMContext):
 
     msg = await message.answer("⏳ Ожидайте, формируем результат...")
 
-    week = await db.get_search_by_report_type('week')
-    month = await db.get_search_by_report_type('month')
-    month3 = await db.get_search_by_report_type('3month')
-    priorities = await db.get_priorities_by_category_id(category_id)
-
-
-    seo_report.create_report(week, month, month3, priorities)
+    filename = await seo_report.create_report(message.from_user.id, category_id)
+    if filename == "Error":
+        await msg.edit_text("Произошла ошибка, повторите попытку позже", reply_markup=user_kb.back_to_menu)
+        await state.finish()
+        return
 
     await msg.edit_text("""✅ SEO ядро готово
     На основе полученных данных вы можете самостоятельно сгенерировать SEO описание через бота, либо обратитесь к нашим SEO специалистам, которые комплексно проработают вашу карточку по самой доступной цене.""",
-                         reply_markup=user_kb.seo_complete)
-    await message.answer_document(open("report.xlsx", "rb"))
+                        reply_markup=user_kb.seo_complete)
+    await message.answer_document(open(filename, "rb"))
+    os.remove(filename)
     await db.remove_token(message.from_user.id)
     await state.finish()
 
