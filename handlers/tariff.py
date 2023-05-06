@@ -25,7 +25,8 @@ async def tariff(call: CallbackQuery, state: FSMContext):
 
 @dp.callback_query_handler(Text(startswith="buy_tokens"))
 async def buy_tokens(call: CallbackQuery):
-    tokens, amount = call.data.split(":")[1:]
+    tokens = int(call.data.split(":")[1])
+    amount = int(call.data.split(":")[2])
     order_id = await db.add_order(call.from_user.id, tokens, amount)
     await call.bot.send_invoice(call.from_user.id, title="Покупка генераций",
                                 description="Для оплаты тарифа перейдите по ссылке: Оплатить",
