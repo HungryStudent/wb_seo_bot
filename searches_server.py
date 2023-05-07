@@ -31,6 +31,8 @@ async def create_report(user_id: int, category_id: int):
             except KeyError:
                 word_forms_data[normal_form] = {"name": normal_form, "word_forms": [word], "entries_count": 1,
                                                 "frequency": record["frequency"]}
+            except Exception as e:
+                continue
 
     res = []
     for value in word_forms_data.values():
