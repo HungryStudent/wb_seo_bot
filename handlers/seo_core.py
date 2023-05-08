@@ -47,9 +47,9 @@ async def enter_request(message: Message, state: FSMContext):
         if card is not None:
             category_id = card["subjectId"]
     else:
-        ads_data = wb_api.get_ads(message.text)
-        if ads_data["prioritySubjects"] is not None:
-            category_id = ads_data["prioritySubjects"][0]
+        category = await db.get_category_by_name(message.text)
+        if category is not None:
+            category_id = category["category_id"]
 
     if category_id is None:
         await message.answer("""🥺 Извините, я вас не понял. Попробуйте еще раз.

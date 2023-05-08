@@ -12,6 +12,9 @@ app = FastAPI()
 
 @app.get('/report')
 async def create_report(user_id: int, category_id: int):
+    week = await db.get_search_by_report_type('week')
+    month = await db.get_search_by_report_type('month')
+    month3 = await db.get_search_by_report_type('3month')
     priorities = await db.get_priorities_by_category_id(category_id)
 
     word_forms_data = {}
@@ -37,7 +40,31 @@ async def create_report(user_id: int, category_id: int):
         res.append(value)
     word_forms_data = res
 
-    wb = Workbook(write_only=True)
+    wb = Workbook()
+    week_ws: Worksheet = wb.active
+    week_ws.title = "Неделя"
+    week_ws.append(["Поисковый запрос", "", "", "Товаров", "Проверить", "1", "2", "3", "4", "5"])
+    for record in week:
+        record = dict(record)
+        record.pop("search_id")
+        record["is_need_check"] = "Да" if record["is_need_check"] else ""
+        week_ws.append(list(record.values()))
+
+    month_ws = wb.create_sheet("Месяц")
+    month_ws.append(["Поисковый запрос", "", "", "Товаров", "Проверить", "1", "2", "3", "4", "5"])
+    for record in month:
+        record = dict(record)
+        record.pop("search_id")
+        record["is_need_check"] = "Да" if record["is_need_check"] else ""
+        month_ws.append(list(record.values()))
+
+    month3_ws = wb.create_sheet("3 месяца")
+    month3_ws.append(["Поисковый запрос", "", "", "Товаров", "Проверить", "1", "2", "3", "4", "5"])
+    for record in month3:
+        record = dict(record)
+        record.pop("search_id")
+        record["is_need_check"] = "Да" if record["is_need_check"] else ""
+        month3_ws.append(list(record.values()))
 
     priorities_ws = wb.create_sheet("Запросы")
     priorities_ws.append(["Поисковый запрос", "Частотность", "Кол-во товаров", "Приоритет"])
