@@ -162,12 +162,14 @@ async def add_search_frequency(search_id, frequency, report_type, update_day):
     await conn.close()
 
 
-async def delete_first_search_frequency():
+async def delete_first_search_frequency(period):
     conn: Connection = await get_conn()
-    row = await conn.fetchrow("SELECT COUNT(distinct update_day) as days_count FROM search_frequency")
+    row = await conn.fetchrow(
+        "SELECT COUNT(distinct update_day) as days_count FROM search_frequency WHERE report_type = $1", period)
     if row["days_count"] > 2:
         await conn.execute(
-            "DELETE from search_frequency WHERE update_day = (SELECT MIN(update_day) FROM search_frequency)")
+            "DELETE from search_frequency WHERE update_day = (SELECT MIN(update_day) FROM search_frequency WHERE report_type = $1)",
+            period)
     await conn.close()
 
 
