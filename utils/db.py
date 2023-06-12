@@ -276,7 +276,7 @@ async def get_search_id_by_query(query):
     conn: Connection = await get_conn()
     row = await conn.fetchrow("SELECT search_id from search WHERE query = $1", query)
     await conn.close()
-    if "search_id" in row:
+    if row is not None:
         return row["search_id"]
 
 
