@@ -270,3 +270,20 @@ WHERE category_id = $1""",
                             category_id, main_report_type)
     await conn.close()
     return rows
+
+
+async def get_search_id_by_query(query):
+    conn: Connection = await get_conn()
+    row = await conn.fetchrow("SELECT search_id from search WHERE query = $1", query)
+    await conn.close()
+    if "search_id" in row:
+        return row["search_id"]
+
+
+async def get_frequency_by_search_id_and_report_type(search_id, report_type):
+    conn: Connection = await get_conn()
+    rows = await conn.fetch(
+        "SELECT frequency from search_frequency WHERE search_id = $1 and report_type = $2 ORDER BY update_day DESC LIMIT 2;",
+        search_id, report_type)
+    await conn.close()
+    return rows

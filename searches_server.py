@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 
 import pymorphy2
 from utils import db
@@ -57,3 +57,25 @@ async def create_report(user_id: int, category_id: int):
     filename = f"{user_id}-{category_id}.xlsx"
     wb.save(filename)
     return {"filename": filename}
+
+
+@app.get("/seasonality")
+async def get_seasonality(query: str):
+    search_id = await db.get_search_id_by_query(query)
+    if search_id is None:
+        raise HTTPException(400)
+    response_data = []
+    report_types = ["week", "month", "3month"]
+    for report_type in report_types:
+        frequencies = await db.get_frequency_by_search_id_and_report_type(search_id, report_type)
+        if len(frequencies) == 1:
+            frequency_diff = 0
+            frequency = frequencies[0]["frequency"]
+        else:
+            frequency_diff = (frequencies[1]["frequency"] - frequencies[0]["frequency"]) / frequencies[0][
+                "frequency"] * 100
+            frequency_diff = round(frequency_diff, 1)
+            frequency = frequencies[1]["frequency"]
+        response_data.append(
+            {"date_type": report_type, "frequency": frequency, "diff": frequency_diff})
+    return response_data
