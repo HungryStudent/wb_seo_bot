@@ -68,7 +68,10 @@ async def get_seasonality(query: str):
     report_types = ["week", "month", "3month"]
     for report_type in report_types:
         frequencies = await db.get_frequency_by_search_id_and_report_type(search_id, report_type)
-        if len(frequencies) == 1:
+        if len(frequencies) == 0:
+            frequency_diff = 0
+            frequency = 0
+        elif len(frequencies) == 1:
             frequency_diff = 0
             frequency = frequencies[0]["frequency"]
         else:
